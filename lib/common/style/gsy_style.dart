@@ -20,13 +20,6 @@ class GSYColors {
     },
   );
 
-  static const String primaryValueString = "#24292E";
-  static const String primaryLightValueString = "#42464b";
-  static const String primaryDarkValueString = "#121917";
-  static const String miWhiteString = "#ececec";
-  static const String actionBlueString = "#267aff";
-  static const String webDraculaBackgroundColorString = "#282a36";
-
   static const Color primaryValue = Color(0xFF24292E);
   static const Color primaryLightValue = Color(0xFF42464b);
   static const Color primaryDarkValue = Color(0xFF121917);
@@ -40,16 +33,12 @@ class GSYColors {
   static const Color subLightTextColor = Color(0xffc4c4c4);
 
   static const Color mainBackgroundColor = miWhite;
-
   static const Color mainTextColor = primaryDarkValue;
   static const Color textColorWhite = white;
 }
 
 ///文本样式
 class GSYConstant {
-  static const String app_default_share_url =
-      "https://github.com/CarGuo/gsy_github_app_flutter";
-
   static const lagerTextSize = 30.0;
   static const bigTextSize = 23.0;
   static const normalTextSize = 18.0;
@@ -237,57 +226,4 @@ class GSYICons {
       IconData(0xe666, fontFamily: GSYICons.FONT_FAMILY);
   static const IconData LOGIN_PW =
       IconData(0xe60e, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData REPOS_ITEM_USER =
-      IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_STAR =
-      IconData(0xe643, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_FORK =
-      IconData(0xe67e, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_ISSUE =
-      IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData REPOS_ITEM_STARED =
-      IconData(0xe698, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_WATCH =
-      IconData(0xe681, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_WATCHED =
-      IconData(0xe629, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_DIR = Icons.folder;
-  static const IconData REPOS_ITEM_FILE =
-      IconData(0xea77, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData REPOS_ITEM_NEXT =
-      IconData(0xe610, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData USER_ITEM_COMPANY =
-      IconData(0xe63e, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData USER_ITEM_LOCATION =
-      IconData(0xe7e6, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData USER_ITEM_LINK =
-      IconData(0xe670, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData USER_NOTIFY =
-      IconData(0xe600, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData ISSUE_ITEM_ISSUE =
-      IconData(0xe661, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData ISSUE_ITEM_COMMENT =
-      IconData(0xe6ba, fontFamily: GSYICons.FONT_FAMILY);
-  static const IconData ISSUE_ITEM_ADD =
-      IconData(0xe662, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData ISSUE_EDIT_H1 = Icons.filter_1;
-  static const IconData ISSUE_EDIT_H2 = Icons.filter_2;
-  static const IconData ISSUE_EDIT_H3 = Icons.filter_3;
-  static const IconData ISSUE_EDIT_BOLD = Icons.format_bold;
-  static const IconData ISSUE_EDIT_ITALIC = Icons.format_italic;
-  static const IconData ISSUE_EDIT_QUOTE = Icons.format_quote;
-  static const IconData ISSUE_EDIT_CODE = Icons.format_shapes;
-  static const IconData ISSUE_EDIT_LINK = Icons.insert_link;
-
-  static const IconData NOTIFY_ALL_READ =
-      IconData(0xe62f, fontFamily: GSYICons.FONT_FAMILY);
-
-  static const IconData PUSH_ITEM_EDIT = Icons.mode_edit;
-  static const IconData PUSH_ITEM_ADD = Icons.add_box;
-  static const IconData PUSH_ITEM_MIN = Icons.indeterminate_check_box;
 }

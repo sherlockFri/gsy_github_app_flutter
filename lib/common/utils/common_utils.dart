@@ -9,33 +9,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
-import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/toast.dart';
 import 'package:gsy_github_app_flutter/provider/app_state_provider.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
-import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_flex_button.dart';
-import 'package:gsy_github_app_flutter/page/issue/issue_edit_dIalog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// 通用逻辑
-/// Created by guoshuyu
-/// Date: 2018-07-16
-
-typedef StringList = List<String>;
-
 class CommonUtils {
   static const double MILLIS_LIMIT = 1000.0;
-
   static const double SECONDS_LIMIT = 60 * MILLIS_LIMIT;
-
   static const double MINUTES_LIMIT = 60 * SECONDS_LIMIT;
-
   static const double HOURS_LIMIT = 24 * MINUTES_LIMIT;
-
   static const double DAYS_LIMIT = 30 * HOURS_LIMIT;
 
   static Locale? curLocale;
@@ -47,10 +34,6 @@ class CommonUtils {
       return date.toString();
     }
     return date.toString().substring(0, 10);
-  }
-
-  static String getUserChartAddress(String userName) {
-    return "${Address.graphicHost}${GSYColors.primaryValueString.replaceAll("#", "")}/$userName";
   }
 
   ///日期格式转换
@@ -108,7 +91,7 @@ class CommonUtils {
         return null;
       }
     }
-    String appDocPath = "${appDir!.path}/gsygithubappflutter";
+    String appDocPath = "${appDir!.path}/gsyapp";
     Directory appPath = Directory(appDocPath);
     await appPath.create(recursive: true);
     return appPath;
@@ -121,7 +104,7 @@ class CommonUtils {
     } else {
       appDir = await getApplicationSupportDirectory();
     }
-    String appDocPath = "${appDir.path}/gsygithubappflutter";
+    String appDocPath = "${appDir.path}/gsyapp";
     Directory appPath = Directory(appDocPath);
     await appPath.create(recursive: true);
     return appPath.path;
@@ -143,64 +126,20 @@ class CommonUtils {
     return description;
   }
 
-  /*static saveImage(String url) async {
-    Future<String> _findPath(String imageUrl) async {
-      final file = await Cache.DefaultCacheManager().getSingleFile(url);
-      if (file == null) {
-        return null;
-      }
-      Directory localPath = await CommonUtils.getLocalPath();
-      if (localPath == null) {
-        return null;
-      }
-      final name = splitFileNameByPath(file.path);
-      final result = await file.copy(localPath.path + name);
-      return result.path;
-    }
-
-    return _findPath(url);
-  }*/
-
   static splitFileNameByPath(String path) {
     return path.substring(path.lastIndexOf("/"));
   }
 
-  static getFullName(String? repository_url) {
-    if (repository_url != null &&
-        repository_url.substring(repository_url.length - 1) == "/") {
-      repository_url = repository_url.substring(0, repository_url.length - 1);
-    }
-    String fullName = '';
-    if (repository_url != null) {
-      StringList splicurl = repository_url.split("/");
-      if (splicurl.length > 2) {
-        fullName =
-            "${splicurl[splicurl.length - 2]}/${splicurl[splicurl.length - 1]}";
-      }
-    }
-    return fullName;
-  }
-
-  static getThemeData(Color color) {
+  static ThemeData getThemeData(Color color) {
     return ThemeData(
       useMaterial3: false,
-
-      ///用来适配 Theme.of(context).primaryColorLight 和 primaryColorDark 的颜色变化，不设置可能会是默认蓝色
       primarySwatch: color as MaterialColor,
-
-      /// Card 在 M3 下，会有 apply Overlay
-
       colorScheme: ColorScheme.fromSeed(
         seedColor: color,
         primary: color,
-
         brightness: Brightness.light,
-
-        ///影响 card 的表色，因为 M3 下是  applySurfaceTint ，在 Material 里
         surfaceTint: Colors.transparent,
       ),
-
-      /// 受到 iconThemeData.isConcrete 的印象，需要全参数才不会进入 fallback
       iconTheme: const IconThemeData(
         size: 24.0,
         fill: 0.0,
@@ -210,35 +149,21 @@ class CommonUtils {
         color: Colors.white,
         opacity: 0.8,
       ),
-
-      ///修改 FloatingActionButton的默认主题行为
       floatingActionButtonTheme: FloatingActionButtonThemeData(
           foregroundColor: Colors.white,
           backgroundColor: color,
           shape: const CircleBorder()),
       appBarTheme: AppBarTheme(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-          size: 24.0,
-        ),
+        iconTheme: const IconThemeData(color: Colors.white, size: 24.0),
         backgroundColor: color,
         titleTextStyle: Typography.dense2021.titleLarge,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-
-      // 如果需要去除对应的水波纹效果
-      // splashFactory: NoSplash.splashFactory,
-      // textButtonTheme: TextButtonThemeData(
-      //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
-      // ),
-      // elevatedButtonTheme: ElevatedButtonThemeData(
-      //   style: ButtonStyle(splashFactory: NoSplash.splashFactory),
-      // ),
     );
   }
 
   static showLanguageDialog(WidgetRef ref) {
-    StringList list = [
+    List<String> list = [
       ref.context.l10n.home_language_default,
       ref.context.l10n.home_language_zh,
       ref.context.l10n.home_language_en,
@@ -292,67 +217,10 @@ class CommonUtils {
     }
   }
 
-  static gsyLaunchUrl(BuildContext context, String? url) {
-    if (url == null && url!.isEmpty) return;
-    Uri parseUrl = Uri.parse(url);
-    bool isImage = isImageEnd(parseUrl.toString());
-    if (parseUrl.toString().endsWith("?raw=true")) {
-      isImage = isImageEnd(parseUrl.toString().replaceAll("?raw=true", ""));
-    }
-    if (isImage) {
-      NavigatorUtils.gotoPhotoViewPage(context, url);
-      return;
-    }
-
-    if (parseUrl.host == "github.com" && parseUrl.path.isNotEmpty) {
-      StringList pathnames = parseUrl.path.split("/");
-      switch (pathnames.length) {
-        case == 2:
-          //解析人
-          String userName = pathnames[1];
-          NavigatorUtils.goPerson(context, userName);
-          break;
-        case >= 3:
-          //解析仓库
-          if (pathnames.length == 3) {
-            var [_, userName, repoName] = pathnames;
-            NavigatorUtils.goReposDetail(context, userName, repoName);
-          } else {
-            launchWebView(context, "", url);
-          }
-          break;
-      }
-    } else if (url.startsWith("http")) {
-      launchWebView(context, "", url);
-    }
-  }
-
-  static void launchWebView(BuildContext context, String? title, String url) {
-    if (url.startsWith("http")) {
-      NavigatorUtils.goGSYWebView(context, url, title);
-    } else {
-      NavigatorUtils.goGSYWebView(
-          context,
-          Uri.dataFromString(url,
-                  mimeType: 'text/html', encoding: Encoding.getByName("utf-8"))
-              .toString(),
-          title);
-    }
-  }
-
-  static launchOutURL(String? url, BuildContext context) async {
-    if (url != null && await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-    } else {
-      showToast(
-          // ignore: use_build_context_synchronously
-          "${context.l10n.option_web_launcher_error}: ${url ?? ""}");
-    }
-  }
-
   static Future<void> showLoadingDialog(BuildContext context) {
-    return NavigatorUtils.showGSYDialog(
+    return showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return Material(
               color: Colors.transparent,
@@ -365,7 +233,6 @@ class CommonUtils {
                     padding: const EdgeInsets.all(4.0),
                     decoration: const BoxDecoration(
                       color: Colors.transparent,
-                      //用一个BoxDecoration装饰器提供背景图片
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
                     ),
                     child: Column(
@@ -383,35 +250,6 @@ class CommonUtils {
         });
   }
 
-  static Future<void> showEditDialog(
-    BuildContext context,
-    String dialogTitle,
-    ValueChanged<String>? onTitleChanged,
-    ValueChanged<String> onContentChanged,
-    VoidCallback onPressed, {
-    TextEditingController? titleController,
-    TextEditingController? valueController,
-    bool needTitle = true,
-    String? hintText,
-  }) {
-    return NavigatorUtils.showGSYDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Center(
-            child: IssueEditDialog(
-              dialogTitle,
-              onTitleChanged,
-              onContentChanged,
-              onPressed,
-              titleController: titleController,
-              valueController: valueController,
-              needTitle: needTitle,
-              hintText: hintText,
-            ),
-          );
-        });
-  }
-
   ///列表item dialog
   static Future<void> showCommitOptionDialog(
     BuildContext context,
@@ -421,7 +259,7 @@ class CommonUtils {
     height = 400.0,
     List<Color>? colorList,
   }) {
-    return NavigatorUtils.showGSYDialog(
+    return showDialog(
         context: context,
         builder: (BuildContext context) {
           return Center(
@@ -432,7 +270,6 @@ class CommonUtils {
               margin: const EdgeInsets.all(20.0),
               decoration: const BoxDecoration(
                 color: GSYColors.white,
-                //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
               child: ListView.builder(
@@ -457,38 +294,4 @@ class CommonUtils {
           );
         });
   }
-
-  ///版本更新
-  static Future<void> showUpdateDialog(
-      BuildContext context, String contentMsg) {
-    return NavigatorUtils.showGSYDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(context.l10n.app_version_title),
-            content: Text(contentMsg),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(context.l10n.app_cancel)),
-              TextButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse(Address.updateUrl),
-                        mode: LaunchMode.externalApplication);
-                    Navigator.pop(context);
-                  },
-                  child: Text(context.l10n.app_ok)),
-            ],
-          );
-        });
-  }
-}
-
-String getRawBaseUrl(
-    {required String userName,
-    required String repoName,
-    required String branch}) {
-  return "https://raw.githubusercontent.com/$userName/$repoName/$branch/";
 }

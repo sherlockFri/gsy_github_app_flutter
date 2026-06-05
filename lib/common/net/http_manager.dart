@@ -1,14 +1,10 @@
-import 'package:dio/dio.dart';
-import 'package:gsy_github_app_flutter/common/net/code.dart';
-
 import 'dart:collection';
 
-//import 'package:connectivity_plus/connectivity_plus.dart';
-
+import 'package:dio/dio.dart';
+import 'package:gsy_github_app_flutter/common/net/code.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/error_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/header_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.dart';
-
 import 'package:gsy_github_app_flutter/common/net/interceptors/response_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/token_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';
@@ -21,7 +17,7 @@ class HttpManager {
   late final TokenInterceptors _tokenInterceptors;
 
   HttpManager._internal() {
-    _dio = Dio(); // 使用默认配置
+    _dio = Dio();
     _tokenInterceptors = TokenInterceptors();
 
     _dio.interceptors.addAll([
@@ -36,10 +32,6 @@ class HttpManager {
   static final HttpManager _instance = HttpManager._internal();
 
   ///发起网络请求
-  ///[ url] 请求url
-  ///[ params] 请求参数
-  ///[ header] 外加头
-  ///[ option] 配置
   Future<ResultData?> netFetch(
       url, params, Map<String, dynamic>? header, Options? option,
       {noTip = false}) async {
@@ -96,53 +88,7 @@ class HttpManager {
     return _tokenInterceptors.getAuthorization();
   }
 
-  /// 提供单例访问
   static HttpManager get instance => _instance;
 }
 
 final HttpManager httpManager = HttpManager.instance;
-
-//
-//
-// initDio() {
-//   DioClient.getInstance();
-//   initializeNetworkListener();
-// }
-//
-// class DioClient {
-//   static Dio? _dio;
-//
-//   DioClient._();
-//
-//   static Future<Dio> getInstance() async {
-//     if (_dio == null) {
-//       await _initialize();
-//     }
-//     return _dio!;
-//   }
-//
-//   static Future<void> _initialize() async {
-//     _dio = Dio(BaseOptions(
-//       connectTimeout: const Duration(seconds: 10),
-//       receiveTimeout: const Duration(seconds: 10),
-//     ));
-//
-//     _dio!.interceptors.add(LogInterceptor(
-//       requestHeader: true,
-//       requestBody: true,
-//       responseHeader: true,
-//       responseBody: true,
-//     ));
-//   }
-//
-//   static void reset() {
-//     _dio?.close();
-//     _dio = null;
-//   }
-// }
-//
-// void initializeNetworkListener() {
-//   Connectivity().onConnectivityChanged.listen((result) {
-//     DioClient.reset();
-//   });
-// }

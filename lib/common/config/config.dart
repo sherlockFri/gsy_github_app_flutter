@@ -1,13 +1,10 @@
 class Config {
-  // Private constructor to prevent instantiation
   Config._();
 
   static bool? DEBUG = true;
 
   static const PAGE_SIZE = 20;
 
-  /// //////////////////////////////////////常量////////////////////////////////////// ///
-  static const API_TOKEN = "4d65e2a5626103f92a71867d7b49fea0";
   static const TOKEN_KEY = "token";
   static const USER_NAME_KEY = "user-name";
   static const PW_KEY = "user-pw";
