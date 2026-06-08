@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 
 /// 用户相关Redux
 final UserReducer = combineReducers<User?>([
-  TypedReducer<User?, UpdateUserAction>(_updateLoaded),
+  TypedReducer<User?, UpdateUserAction>(_updateLoaded).call,
 ]);
 
 User? _updateLoaded(User? user, action) {

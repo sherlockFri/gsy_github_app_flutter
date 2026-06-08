@@ -9,9 +9,7 @@ class TokenInterceptors extends InterceptorsWrapper {
 
   @override
   onRequest(RequestOptions options, handler) async {
-    if (_token == null) {
-      _token = await LocalStorage.get(Config.TOKEN_KEY);
-    }
+    _token ??= await LocalStorage.get(Config.TOKEN_KEY);
     if (_token != null) {
       options.headers["Authorization"] = _token;
     }

@@ -7,8 +7,8 @@ import 'package:redux/redux.dart';
 
 /// 登录相关Redux
 final LoginReducer = combineReducers<bool?>([
-  TypedReducer<bool?, LoginSuccessAction>(_loginResult),
-  TypedReducer<bool?, LogoutAction>(_logoutResult),
+  TypedReducer<bool?, LoginSuccessAction>(_loginResult).call,
+  TypedReducer<bool?, LogoutAction>(_logoutResult).call,
 ]);
 
 bool? _loginResult(bool? result, LoginSuccessAction action) {

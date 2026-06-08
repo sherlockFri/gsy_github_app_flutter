@@ -95,7 +95,7 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
     widget.onPageChanged?.call(index);
 
     ///不想要动画
-    _pageController.jumpTo(MediaQuery.sizeOf(context).width * index);
+    _pageController.jumpToPage(index);
     widget.onSinglePress?.call(index);
   }
 
@@ -155,7 +155,9 @@ class _GSYTabBarState extends State<GSYTabBarWidget>
               //配置控制器
               tabs: widget.tabItems!,
               indicatorColor: widget.indicatorColor,
-              onDoubleTap: _navigationDoubleTapClick,
+              onDoubleTap: widget.onDoublePress == null
+                  ? null
+                  : _navigationDoubleTapClick,
               onTap: _navigationTapClick, //tab标签的下划线颜色
             ),
           ),

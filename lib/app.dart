@@ -34,7 +34,7 @@ class _FlutterReduxAppState extends State<FlutterReduxApp>
     middleware: middleware,
     initialState: GSYState(
       userInfo: User.empty(),
-      login: false,
+      login: true,
     ),
   );
 

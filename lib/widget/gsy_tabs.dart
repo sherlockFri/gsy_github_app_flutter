@@ -3,7 +3,8 @@ import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/gestures.dart' show DragStartBehavior;
+import 'package:flutter/gestures.dart'
+    show DragStartBehavior, kDoubleTapMinTime, kDoubleTapTimeout;
 
 const double _kTabHeight = 46.0;
 const double _kTextAndIconTabHeight = 72.0;
@@ -723,6 +724,8 @@ class _TabBarState extends State<TabBar> {
   TabController? _controller;
   _IndicatorPainter? _indicatorPainter;
   int? _currentIndex;
+  int? _lastTapIndex;
+  DateTime? _lastTapTime;
   late double _tabStripWidth;
   List<GlobalKey>? _tabKeys;
 
@@ -932,15 +935,31 @@ class _TabBarState extends State<TabBar> {
 
   void _handleTap(int index) {
     assert(index >= 0 && index < widget.tabs.length);
-    _controller!.animateTo(index);
+    final DateTime tapTime = DateTime.now();
+    final DateTime? lastTapTime = _lastTapTime;
+    final Duration? tapInterval =
+        lastTapTime == null ? null : tapTime.difference(lastTapTime);
+    final bool isDoubleTap = widget.onDoubleTap != null &&
+        _lastTapIndex == index &&
+        tapInterval != null &&
+        tapInterval >= kDoubleTapMinTime &&
+        tapInterval <= kDoubleTapTimeout;
+
+    _lastTapIndex = index;
+    _lastTapTime = tapTime;
+    _controller!.animateTo(index, duration: Duration.zero);
     if (widget.onTap != null) {
       widget.onTap!(index);
+    }
+    if (isDoubleTap) {
+      _lastTapIndex = null;
+      _lastTapTime = null;
+      _handleDoubleTap(index);
     }
   }
 
   void _handleDoubleTap(int index) {
     assert(index >= 0 && index < widget.tabs.length);
-    _controller!.animateTo(index);
     if (widget.onDoubleTap != null) {
       widget.onDoubleTap!(index);
     }
@@ -1045,9 +1064,6 @@ class _TabBarState extends State<TabBar> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           _handleTap(index);
-        },
-        onDoubleTap: () {
-          _handleDoubleTap(index);
         },
         child: Padding(
           padding: EdgeInsets.only(bottom: widget.indicatorWeight),

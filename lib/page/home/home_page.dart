@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gsy_github_app_flutter/common/localization/extension.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/page/dynamic_page.dart';
 import 'package:gsy_github_app_flutter/page/my_page.dart';
+import 'package:gsy_github_app_flutter/page/trend_page.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_tabbar_widget.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_title_bar.dart';
 
@@ -39,11 +41,8 @@ class _HomePageState extends State<HomePage> {
       type: TabType.bottom,
       tabItems: tabs,
       tabViews: [
-        // Placeholder tabs 1 & 2 — replace with your own pages
-        const Center(
-            child: Text('Tab 1', style: GSYConstant.normalText)),
-        const Center(
-            child: Text('Tab 2', style: GSYConstant.normalText)),
+        const DynamicPage(),
+        const TrendPage(),
         MyPage(key: myKey),
       ],
       backgroundColor: GSYColors.primarySwatch,
